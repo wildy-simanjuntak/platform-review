@@ -1,0 +1,5 @@
+import { getLogs } from "./controller.js";
+
+export default async (fastify, opts) => {
+    fastify.get("/", getLogs);
+}

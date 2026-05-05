@@ -1,0 +1,7 @@
+PORT=3000
+HOST=0.0.0.0
+
+API_URL=http://localhost:3001
+ORIGIN_URL=http://localhost:3000
+
+NUXT_PUBLIC_LARAGON_URL=http://localhost/name-project/public

@@ -1,0 +1,30 @@
+{
+  "name": "web",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@iconify-json/solar": "^1.2.5",
+    "@nuxt/ui": "^4.6.1",
+    "alova": "^3.5.1",
+    "nuxt": "^4.4.2",
+    "pinia": "^3.0.4",
+    "slug": "^11.0.1",
+    "socket.io-client": "^4.8.3",
+    "vue": "^3.5.32",
+    "vue-router": "^5.0.4",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@pinia/nuxt": "^0.11.3",
+    "@sidebase/nuxt-auth": "^1.2.0",
+    "@vueuse/core": "^14.2.1",
+    "@vueuse/nuxt": "^14.2.1"
+  }
+}
