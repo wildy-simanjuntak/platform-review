@@ -89,7 +89,7 @@ onScopeDispose(() => scope.stop());
 </script>
 
 <template>
-  <div class="w-64 h-full bg-gradient-to-r from-[#0054A6] to-[#012E67] text-slate-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
+  <div class="w-64 h-full  text-slate-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
 
     <nav class="flex-1 overflow-y-auto p-4 custom-scrollbar">
       <ul class="space-y-1">
