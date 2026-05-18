@@ -48,29 +48,25 @@ const dropdownItems = computed(() => [
 
 
 </script>
-
 <template>
-  <nav class="sticky top-0 z-50 h-16 w-full flex justify-between items-center px-4 md:px-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+  <nav class="bg-gradient-to-r from-[#0054A6] to-[#012E67] sticky top-0 z-50 h-16 w-full flex justify-between items-center px-4 md:px-6  backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
     
-    <!-- Bagian Kiri: Burger + Title -->
     <div class="flex items-center space-x-2 md:space-x-4">
-      <!-- Tombol Hamburger (Hanya muncul di < lg) -->
       <UButton
         icon="i-heroicons-bars-3-bottom-left"
-        color="gray"
+        color="white"
         variant="ghost"
-        class="lg:hidden"
+        class="lg:hidden text-white"
         @click="$emit('toggle-sidebar')"
       />
 
       <div class="hidden xs:block h-6 w-1 bg-blue-600 dark:bg-blue-500 rounded-full"></div>
       
-      <h1 class="text-sm md:text-lg font-bold tracking-tight text-gray-800 dark:text-white uppercase italic truncate max-w-[150px] md:max-w-none">
+      <h1 class="text-sm md:text-lg font-bold tracking-tight text-slate-100 uppercase italic truncate max-w-[150px] md:max-w-none">
         Dashboard
       </h1>
     </div>
 
-    <!-- Bagian Kanan: User Actions -->
     <div class="flex items-center">
       <ClientOnly>
         <UDropdown 
@@ -84,10 +80,9 @@ const dropdownItems = computed(() => [
             item: { size: 'text-sm', padding: 'px-3 py-2' }
           }"
         >
-          <button class="flex items-center group focus:outline-none p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
-            <!-- Nama User & Status (Hanya muncul di desktop) -->
+        <button class="flex items-center group focus:outline-none p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200">
             <div class="hidden sm:flex flex-col text-right mr-3 leading-tight">
-               <span class="text-xs font-semibold text-gray-700 dark:text-gray-200">
+               <span class="text-xs font-semibold text-slate-100 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-200">
                 {{ authData?.user?.username }}
               </span>
               <span class="text-[10px] text-green-500 font-medium uppercase tracking-tighter flex items-center justify-end">
@@ -104,9 +99,8 @@ const dropdownItems = computed(() => [
             />
           </button>
           
-          <!-- Template: Header Akun -->
           <template #account>
-            <div class="p-3 bg-gray-50/50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700 rounded-t-xl">
+            <div class="p-3 bg-gray-50/50 dark:bg-gray-800/50  rounded-t-xl">
               <p class="text-[10px] font-bold text-gray-400 uppercase">Signed in as</p>
               <p class="mt-0.5 font-bold text-gray-900 dark:text-white truncate text-sm">
                 {{ authData?.user?.username }}

@@ -89,7 +89,7 @@ onScopeDispose(() => scope.stop());
 </script>
 
 <template>
-  <div class="w-64 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
+  <div class="w-64 h-full bg-gradient-to-r from-[#0054A6] to-[#012E67] text-slate-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
 
     <nav class="flex-1 overflow-y-auto p-4 custom-scrollbar">
       <ul class="space-y-1">
@@ -103,7 +103,7 @@ onScopeDispose(() => scope.stop());
             :class="[
               statuses[index]?.isActive 
                 ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-semibold' 
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                : 'text-slate-100  hover:bg-gray-50 dark:hover:bg-gray-800'
             ]"
             @click="toggleOpen(index)"
           >
@@ -111,7 +111,7 @@ onScopeDispose(() => scope.stop());
               v-if="item.icon" 
               :name="item.icon" 
               class="w-5 h-5 mr-3 transition-colors"
-              :class="[statuses[index]?.isActive ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600']"
+              :class="[statuses[index]?.isActive ? 'text-blue-600' : 'text-slate-100 group-hover:text-slate-300']"
             />
             
             <span class="text-sm tracking-wide">{{ item.label }}</span>
@@ -139,8 +139,8 @@ onScopeDispose(() => scope.stop());
               <li v-for="(sub, idx) in item.subs" :key="idx">
                 <ULink 
                   :to="sub.to" 
-                  active-class="text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/10 font-medium"
-                  inactive-class="text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  active-class="text-blue-600 dark:text-blue-400 bg-white dark:bg-blue-900/10 font-medium"
+                  inactive-class="text-slate-100 hover:text-gray-900  hover:bg-gray-50 dark:hover:bg-gray-800"
                   class="flex items-center w-full pl-6 pr-3 py-2 text-xs rounded-r-lg transition-all border-l-2 border-transparent"
                 >
                   <span class="truncate">{{ sub.label }}</span>
@@ -154,7 +154,7 @@ onScopeDispose(() => scope.stop());
   </div>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
@@ -165,4 +165,4 @@ onScopeDispose(() => scope.stop());
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
   background: #1e293b;
 }
-</style>
+</style> -->

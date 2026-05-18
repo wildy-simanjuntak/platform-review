@@ -39,8 +39,14 @@ const submit = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 py-12">
-    <div class="max-w-md w-full">
+  <!-- Parent utama dibuat relative, gambar dilepas dari class ini agar tidak merusak layout -->
+  <div class="relative min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 py-12 overflow-hidden">
+    
+    <!-- ELEMEN BACKGROUND KHUSUS: Menggunakan bg-cover + bg-fixed agar gambar utuh tersebar di layar -->
+    <div class="absolute inset-0 bg-[url('/image/labtech.png')] bg-cover bg-center bg-no-repeat bg-fixed opacity-10 pointer-events-none"></div>
+
+    <!-- KONTEN UTAMA: Diberikan z-10 agar berada aman di atas lapisan background -->
+    <div class="max-w-md w-full relative z-10">
       <div class="text-center mb-10">
         <img src="/Logo.png" alt="Logo" class="mx-auto h-16 w-auto mb-6 transform hover:scale-105 transition-transform duration-300">
         <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
