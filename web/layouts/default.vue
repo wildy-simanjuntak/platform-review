@@ -30,7 +30,7 @@ watch(() => route.fullPath, () => {
       </Transition>
 
       <aside 
-        class="fixed h-auto  inset-y-0 left-0 z-40 w-64 bg-gradient-to-r from-[#0054A6] to-[#012E67] border-r border-gray-200 dark:border-gray-800 transform transition-transform duration-300 lg:translate-x-0 lg:static "
+        class="fixed min-h-screen  inset-y-0 left-0 z-40 w-64 bg-gradient-to-r from-[#0054A6] to-[#012E67] border-r border-gray-200 dark:border-gray-800 transform transition-transform duration-300 lg:translate-x-0 lg:static "
         :class="[isSidebarOpen ? 'translate-x-0' : '-translate-x-full']"
       >
         <Sidebar />
