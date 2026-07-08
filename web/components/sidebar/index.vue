@@ -28,7 +28,7 @@ const sidebarItems = [
         subs: [
             { label: 'Category', to: '/project/category' },
             { label: 'Module', to: '/project/module' },
-            { label: 'Content', to: '/project/content' },
+            // { label: 'Content', to: '/project/content' },
         ],
     },
     {

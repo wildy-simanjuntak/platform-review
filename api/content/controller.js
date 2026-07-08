@@ -69,57 +69,121 @@ export const create = async (req, res) => {
 export const upload = async (req, res) => {
   try {
     const parts = req.parts();
+    
     for await (const part of parts) {
-      if (part.type === "file" && part.file) {
-        const {
-          _id,
-          slug: contentSlug,
-          module,
-        } = JSON.parse(part.fields.data.value);
+      // Kita memproses semuanya di dalam blok ini karena 
+      // part.fields sudah tersedia di sini
+      if (part.type === "file" && part.fieldname === "file") {
+        
+        // 1. Ambil data dari fields yang sudah tersedia di dalam part ini
+        const moduleId = part.fields.moduleId.value;
+        const type = part.fields.type.value;
 
-        const mod = await Modules.findById(module._id).populate("project");
-        const item = await Content.findById(_id);
+        // 2. Ambil data Modul
+        const mod = await Modules.findById(moduleId).populate("project");
+        if (!mod) return res.status(404).send({ message: "Modul tidak ditemukan" });
 
-        const tempZipPath = join(publicFolder, "temp", `${item.slug}.zip`);
+        // 3. Cari atau buat Content
+        let item = await Content.findOne({ module: moduleId, name: type });
+        if (!item) {
+          item = await Content.create({
+            name: type,
+            module: moduleId,
+            slug: type.toLowerCase().replace(/\s+/g, '-')
+          });
+        }
+
+        // 4. Proses Path & Unzip
+        const tempZipPath = join(publicFolder, "temp", `${item.slug}-${Date.now()}.zip`);
         const targetFolder = join(
-          publicFolder,
-          "digital-content",
-          mod.project.slug,
-          mod.slug,
-          "pages/content",
-          contentSlug,
+          publicFolder, "digital-content", mod.project.slug, mod.slug, "pages/content", item.slug
         );
 
         await mkdir(join(publicFolder, "temp"), { recursive: true });
         await mkdir(targetFolder, { recursive: true });
 
+        // Unzip file
         await pump(part.file, fs.createWriteStream(tempZipPath));
         const zip = new unZip(tempZipPath);
         zip.extractAllTo(targetFolder, true);
         await unlink(tempZipPath);
 
+        // 5. Update Status & Sinkronisasi
         item.status = true;
-        item.compressedFile = null;
-        item.compressedFileSize = 0;
         await item.save();
 
-        if (!mod.content.includes(_id)) {
-          mod.content.push(_id);
+        if (!mod.content.includes(item._id)) {
+          mod.content.push(item._id);
           await mod.save();
         }
 
         const moduleData = await getUpdatedModule(mod._id);
 
-        res.status(200).send({
+        return res.status(200).send({
           data: item,
           module: moduleData,
         });
       }
     }
   } catch (err) {
-    res.status(500).send({ message: "Gagal memproses file ZIP" });
+    console.error("Upload Error:", err);
+    return res.status(500).send({ message: "Gagal memproses file ZIP: " + err.message });
   }
 };
+// export const upload = async (req, res) => {
+//   try {
+//     const parts = req.parts();
+//     for await (const part of parts) {
+//       if (part.type === "file" && part.file) {
+//         const {
+//           _id,
+//           slug: contentSlug,
+//           module,
+//         } = JSON.parse(part.fields.data.value);
+
+//         const mod = await Modules.findById(module._id).populate("project");
+//         const item = await Content.findById(_id);
+
+//         const tempZipPath = join(publicFolder, "temp", `${item.slug}.zip`);
+//         const targetFolder = join(
+//           publicFolder,
+//           "digital-content",
+//           mod.project.slug,
+//           mod.slug,
+//           "pages/content",
+//           contentSlug,
+//         );
+
+//         await mkdir(join(publicFolder, "temp"), { recursive: true });
+//         await mkdir(targetFolder, { recursive: true });
+
+//         await pump(part.file, fs.createWriteStream(tempZipPath));
+//         const zip = new unZip(tempZipPath);
+//         zip.extractAllTo(targetFolder, true);
+//         await unlink(tempZipPath);
+
+//         item.status = true;
+//         item.compressedFile = null;
+//         item.compressedFileSize = 0;
+//         await item.save();
+
+//         if (!mod.content.includes(_id)) {
+//           mod.content.push(_id);
+//           await mod.save();
+//         }
+
+//         const moduleData = await getUpdatedModule(mod._id);
+
+//         res.status(200).send({
+//           data: item,
+//           module: moduleData,
+//         });
+//       }
+//     }
+//   } catch (err) {
+//     res.status(500).send({ message: "Gagal memproses file ZIP" });
+//   }
+// };
 
 export const update = async (req, res) => {
   try {

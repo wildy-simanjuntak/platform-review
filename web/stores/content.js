@@ -64,13 +64,8 @@ export const useContentStore = defineStore("content", () => {
   }
 
   async function upload(body) {
-    const { contentZip, ...rest } = body;
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(rest));
-    formData.append("content", contentZip);
-
     const res = await alovaInstance
-      .Post("/api/content/upload", formData, {
+      .Post("/api/content/upload", body, {
         headers: { Authorization: token.value },
         enableUpload: true,
       })

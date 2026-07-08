@@ -1,10 +1,14 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
-import { useCommentStore } from '@/stores/comment';
+import { useCommentStore } from '../../stores/comment';
+import { useModuleStore } from '../../stores/module';
+import { useUsersStore } from '../../stores/users';
 
 const route = useRoute();
 const config = useRuntimeConfig();
 const commentStore = useCommentStore();
+const userStore = useUsersStore();
+const moduleStore = useModuleStore();
 
 const commentText = ref('');
 const isLoading = ref(false);
@@ -29,13 +33,40 @@ const scrollToBottom = async () => {
         });
     }
 };
+const { pending, execute, refresh } = useLazyAsyncData(
+  () =>
+    Promise.all([
+      moduleStore.getAll(),
+    //   userStore.getAll(),
+    ]),
+  {
+    immediate: false,
+  },
+);
+
+// Cari data modul berdasarkan moduleId
+const currentModule = computed(() => {
+    return moduleStore.items.find(m => m._id === moduleId);
+});
+
+// console.log(currentModule);
+// const assignedUser = computed(() => {
+//     if (!currentModule.value?.signTo) return null;
+//     return userStore.getAll.find(u => u._id === currentModule.value.signTo);
+// });
+
+// console.log(assignedUser);
 
 watch(() => commentStore.comments, () => {
     scrollToBottom();
 }, { deep: true });
 
 onMounted(async () => {
-    await commentStore.getComments(moduleId);
+    await Promise.all([
+        moduleStore.getAll(),
+        userStore.getAll(),
+        commentStore.getComments(moduleId)
+    ]);
     commentStore.listenComments(moduleId);
     scrollToBottom();
 });
@@ -106,7 +137,12 @@ const formatDate = (date) => new Date(date).toLocaleTimeString('id-ID', { hour: 
         </div>
 
         <div class="w-full lg:w-[400px] flex flex-col bg-white border-l shadow-xl">
-            <div class="p-4 border-b bg-gray-50 font-semibold text-gray-700">Feedback & Diskusi</div>
+            <div class="p-4 border-b bg-gray-50 font-semibold text-gray-700">
+                Feedback & Diskusi 
+                <span v-if="currentModule" class="text-xs font-normal text-gray-500">
+                    (Ditujukan kepada: {{ currentModule.signTo[0]?.username }})
+                </span>
+            </div>
 
             <div ref="scrollContainer" class="flex-grow overflow-y-auto p-4 space-y-4 bg-gray-50/50">
                 <div v-for="item in commentStore.comments" :key="item._id" class="bg-white p-3 rounded-2xl border shadow-sm transition-all">

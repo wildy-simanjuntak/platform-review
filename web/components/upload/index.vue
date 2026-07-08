@@ -43,7 +43,7 @@ const cancel = () => {
     />
     <div class="flex items-center w-full justify-between text-sm text-white pl-4">
       <div>
-        {{ modelValue.name || 'No file chosen' }}
+        {{ modelValue?.name || 'No file chosen' }}
       </div>
       <UButton
         v-if="modelValue?.name"
