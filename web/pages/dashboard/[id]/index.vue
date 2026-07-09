@@ -9,18 +9,30 @@ const q = ref("");
 const newComment = ref("");
 const chatContainer = ref<HTMLElement | null>(null);
 
+const { execute, refresh } = useLazyAsyncData(
+  "projects",
+  () => projectStore.getAll(),
+  {
+    immediate: false,
+  }
+);
+
+let interval: ReturnType<typeof setInterval>;
 
 onMounted(async () => {
-  const projectId = route.params.id as string;
+  await execute();
 
-  if (projectStore.items.length === 0) {
-    await projectStore.getAll();
-  }
+  interval = setInterval(() => {
+    refresh();
+  }, 5000); 
 });
 
+onUnmounted(() => {
+  clearInterval(interval);
+});
 
 const currentProject = computed(() =>
-  projectStore.items.find((p) => p._id === route.params.id),
+  projectStore.items.find(p => p._id === route.params.id)
 );
 
 const filteredModules = computed(() => {

@@ -49,11 +49,13 @@ const currentModule = computed(() => {
     return moduleStore.items.find(m => m._id === moduleId);
 });
 
-// console.log(currentModule);
-// const assignedUser = computed(() => {
-//     if (!currentModule.value?.signTo) return null;
-//     return userStore.getAll.find(u => u._id === currentModule.value.signTo);
-// });
+const assignedUser = computed(() => {
+    const userId = currentModule.value?.signTo?.[0];
+
+    if (!userId) return null;
+
+    return userStore.items.find(user => user._id === userId) ?? null;
+});
 
 // console.log(assignedUser);
 

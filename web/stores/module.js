@@ -51,7 +51,6 @@ export const useModuleStore = defineStore("module", () => {
 
     const newModule = res.data;
     const updatedProject = res.project;
-
     socket.emit("logs-module:create", rest);
 
     this.items.push(newModule);
